@@ -12,6 +12,8 @@ import {
   AlertCircle,
   Database,
   Sparkles,
+  Download,
+  GitBranch,
 } from 'lucide-react';
 
 interface SettingsViewProps {
@@ -398,7 +400,31 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </form>
       </div>
 
-      {/* Section 4: Account Deletion */}
+      {/* Section 4: Source Code & Git Package */}
+      <div className="p-6 rounded-xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3">
+        <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+          <GitBranch className="w-4 h-4 text-indigo-600" />
+          <h2 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+            Source Code Package & Git Repository
+          </h2>
+        </div>
+        <p className="text-xs text-slate-500">
+          This application includes complete TypeScript source code, PWA configuration, Excel engines, and Express backend ready to run anywhere.
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-1">
+          <a
+            href="/attendx-pro-source.tar.gz"
+            download="attendx-pro-source.tar.gz"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-xs transition"
+          >
+            <Download className="w-4 h-4" />
+            <span>Download Source Code Bundle (.tar.gz)</span>
+          </a>
+        </div>
+      </div>
+
+      {/* Section 5: Account Deletion */}
       <div className="p-6 rounded-xl bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 shadow-2xs space-y-3">
         <h2 className="text-xs font-bold text-red-700 dark:text-red-400 uppercase tracking-wider">
           Danger Zone
