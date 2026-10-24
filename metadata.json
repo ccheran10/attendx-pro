@@ -1,0 +1,6 @@
+{
+  "name": "AttendX Pro - Cloud Attendance & Payroll",
+  "description": "Cloud-based staff attendance register, working hours calculator, leave management, and monthly salary payroll system converted from Excel.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

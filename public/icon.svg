@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="100" fill="url(#grad)" />
+  <!-- Clipboard / Calendar Base -->
+  <rect x="96" y="112" width="320" height="320" rx="32" fill="#1e293b" stroke="#334155" stroke-width="12" />
+  <path d="M192 112 V80 A16 16 0 0 1 208 64 H304 A16 16 0 0 1 320 80 V112 Z" fill="#334155" />
+  <circle cx="256" cy="88" r="12" fill="#94a3b8" />
+  
+  <!-- Checkmark and Clock Grid -->
+  <line x1="144" y1="180" x2="368" y2="180" stroke="#475569" stroke-width="8" stroke-linecap="round" />
+  <line x1="144" y1="230" x2="260" y2="230" stroke="#475569" stroke-width="8" stroke-linecap="round" />
+  <line x1="144" y1="280" x2="240" y2="280" stroke="#475569" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Glowing Accent Badge with Checkmark -->
+  <circle cx="340" cy="290" r="72" fill="url(#accent)" />
+  <polyline points="310,290 332,312 374,270" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Sparkle dots -->
+  <circle cx="160" cy="350" r="8" fill="#10b981" />
+  <circle cx="200" cy="350" r="8" fill="#3b82f6" />
+  <circle cx="240" cy="350" r="8" fill="#f59e0b" />
+  <circle cx="280" cy="350" r="8" fill="#ef4444" />
+</svg>

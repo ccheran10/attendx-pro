@@ -1,0 +1,25 @@
+{
+  "id": "/",
+  "name": "AttendX Pro - Cloud Attendance & Payroll",
+  "short_name": "AttendX",
+  "description": "Cloud-based staff attendance register, working hours calculator, leave management, and monthly salary payroll system converted from Excel.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#1e293b",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
