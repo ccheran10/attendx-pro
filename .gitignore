@@ -1,8 +1,26 @@
+# Dependencies
 node_modules/
-build/
+
+# Production build outputs
 dist/
+build/
+android-build/
+*.apk
+*.aab
+
+# Logs and coverage
 coverage/
-.DS_Store
 *.log
-.env*
+npm-debug.log*
+
+# Environment variables & secrets (never commit!)
+.env
+.env*.local
 !.env.example
+
+# Temporary database files
+data/*.tmp
+
+# OS metadata
+.DS_Store
+Thumbs.db

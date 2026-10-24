@@ -72,6 +72,14 @@ export const api = {
     return res;
   },
 
+  async loginAsDemo(): Promise<{ user: UserProfile; token: string }> {
+    const res = await this.request<{ user: UserProfile; token: string }>('/api/auth/demo', {
+      method: 'POST',
+    });
+    this.setToken(res.token);
+    return res;
+  },
+
   async getMe(): Promise<{ user: UserProfile; settings: WorkspaceSettings }> {
     return this.request<{ user: UserProfile; settings: WorkspaceSettings }>('/api/auth/me');
   },

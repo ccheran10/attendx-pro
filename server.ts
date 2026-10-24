@@ -66,6 +66,16 @@ app.post('/api/auth/login', async (req: Request, res: Response) => {
   }
 });
 
+app.post('/api/auth/demo', async (_req: Request, res: Response) => {
+  try {
+    const result = await db.getOrCreateDemoGuest();
+    return res.json(result);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    return res.status(500).json({ error: message });
+  }
+});
+
 app.get('/api/auth/me', requireAuth, (req: AuthenticatedRequest, res: Response) => {
   const token = req.headers.authorization?.substring(7) || '';
   const user = db.getUserByToken(token);

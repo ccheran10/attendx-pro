@@ -1,7 +1,11 @@
 {
-  "name": "react-example",
-  "private": true,
-  "version": "0.0.0",
+  "name": "attendx-pro",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccheran10/attendx-pro.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",

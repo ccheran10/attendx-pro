@@ -1,0 +1,19 @@
+services:
+  attendx-pro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: attendx-pro
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    volumes:
+      # Persistent storage volume for staff attendance database
+      - attendx-data:/app/data
+
+volumes:
+  attendx-data:
+    driver: local

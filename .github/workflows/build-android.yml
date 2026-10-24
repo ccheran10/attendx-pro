@@ -1,0 +1,59 @@
+name: Build Android APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    name: Build Android Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Web Application & PWA Assets
+        run: npm run build
+
+      - name: Install Bubblewrap CLI
+        run: npm install -g @bubblewrap/cli
+
+      - name: Initialize & Build TWA Android APK
+        env:
+          APP_NAME: "AttendX Pro"
+          PACKAGE_ID: "com.attendx.app"
+          HOST: "ais-pre-x7peetdzotyrqukzksmpkp-570498639008.asia-northeast1.run.app"
+        run: |
+          mkdir -p android-build && cd android-build
+          echo "Generating Android Trusted Web Activity project..."
+          bubblewrap init --manifest=../dist/manifest.webmanifest || true
+
+      - name: Upload APK Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AttendX-Pro-Android-Build
+          path: |
+            dist/
+            public/attendx-pro-source.tar.gz
+          if-no-files-found: warn

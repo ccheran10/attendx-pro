@@ -159,6 +159,24 @@ class Database {
     };
   }
 
+  public async getOrCreateDemoGuest(): Promise<{ user: UserProfile; token: string }> {
+    const guestUsername = 'demo_guest';
+    let user = this.data.users.find((u) => u.username.toLowerCase() === guestUsername);
+    if (!user) {
+      const created = await this.createUser(guestUsername, 'DemoGuestPass123!');
+      user = this.data.users.find((u) => u.id === created.id)!;
+      this.seedDemoData(user.id);
+    }
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = Date.now() + 30 * 24 * 60 * 60 * 1000;
+    this.data.sessions.push({ token, userId: user.id, expiresAt });
+    this.persist();
+    return {
+      user: { id: user.id, username: user.username, createdAt: user.createdAt },
+      token,
+    };
+  }
+
   public getUserByToken(token: string): UserProfile | null {
     const session = this.data.sessions.find((s) => s.token === token && s.expiresAt > Date.now());
     if (!session) return null;
