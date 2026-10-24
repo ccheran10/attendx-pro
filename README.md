@@ -157,9 +157,10 @@ docker run -d -p 3000:3000 -v attendx-data:/app/data attendx-pro
 
 ## 📦 Releases & Downloads
 
-- **Official Release Downloads**: [GitHub Releases](https://github.com/ccheran10/attendx-pro/releases)
-- **Source Code Archive**: Available in the app under **Settings $\rightarrow$ Download Source Code (.tar.gz)** or via GitHub Releases.
-- **Android APK Workflow**: Automated GitHub Actions workflow (`.github/workflows/build-android.yml`) builds release packages on every version tag (`v*`).
+- **Direct Android APK**: [Download attendx-pro.apk](https://github.com/ccheran10/attendx-pro/releases/download/v1.0.0/attendx-pro.apk) (Native Android package, v1.0.0, signed)
+- **Official GitHub Releases**: [AttendX Pro Releases](https://github.com/ccheran10/attendx-pro/releases)
+- **Source Code Archive**: Available in the app under **Settings $\rightarrow$ Source Code Bundle (.tar.gz)** or [attendx-pro-v1.0.0-source.tar.gz](https://github.com/ccheran10/attendx-pro/releases/download/v1.0.0/attendx-pro-v1.0.0-source.tar.gz).
+- **In-App Direct Downloads**: Download both the APK and full source package directly inside the live application under **Settings**.
 
 ---
 

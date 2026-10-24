@@ -14,6 +14,8 @@ import {
   Sparkles,
   Download,
   GitBranch,
+  Smartphone,
+  ExternalLink,
 } from 'lucide-react';
 
 interface SettingsViewProps {
@@ -413,26 +415,53 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </form>
       </div>
 
-      {/* Section 4: Source Code & Git Package */}
+      {/* Section 4: Downloads & Open Source Distribution */}
       <div className="p-6 rounded-xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3">
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
-          <GitBranch className="w-4 h-4 text-indigo-600" />
-          <h2 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-            Source Code Package & Git Repository
-          </h2>
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex items-center gap-2">
+            <Smartphone className="w-4 h-4 text-emerald-600" />
+            <h2 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+              Downloadable Application Packages & Source
+            </h2>
+          </div>
+          <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 font-semibold border border-emerald-200 dark:border-emerald-800">
+            v1.0.0 Official Release
+          </span>
         </div>
         <p className="text-xs text-slate-500">
-          This application includes complete TypeScript source code, PWA configuration, Excel engines, and Express backend ready to run anywhere.
+          Download the verified native Android APK installer or the complete open-source bundle. You can also view published assets on GitHub Releases.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-1">
+        <div className="flex flex-wrap items-center gap-2.5 pt-1">
+          {/* Android APK Download */}
+          <a
+            href="/attendx-pro.apk"
+            download="attendx-pro.apk"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-xs font-semibold shadow-xs transition"
+          >
+            <Smartphone className="w-4 h-4" />
+            <span>Download Android App (.apk)</span>
+          </a>
+
+          {/* Source Code Archive */}
           <a
             href="/attendx-pro-source.tar.gz"
             download="attendx-pro-source.tar.gz"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-xs transition"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white text-white text-xs font-semibold shadow-xs transition"
           >
             <Download className="w-4 h-4" />
-            <span>Download Source Code Bundle (.tar.gz)</span>
+            <span>Source Code Bundle (.tar.gz)</span>
+          </a>
+
+          {/* GitHub Releases */}
+          <a
+            href="https://github.com/ccheran10/attendx-pro/releases"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold transition"
+          >
+            <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+            <span>GitHub Releases</span>
           </a>
         </div>
       </div>

@@ -5,8 +5,15 @@ node_modules/
 dist/
 build/
 android-build/
+scripts/android-build/
 *.apk
 *.aab
+!public/attendx-pro.apk
+*.idsig
+
+# Keystores & credentials (never commit!)
+*.jks
+*.keystore
 
 # Logs and coverage
 coverage/

@@ -12,6 +12,7 @@ import {
   Settings as SettingsIcon,
   LogOut,
   Building2,
+  Smartphone,
 } from 'lucide-react';
 
 export type NavTab = 
@@ -96,7 +97,17 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Zone 3: 1 Primary Action & Profile */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2.5 shrink-0">
+            <a
+              href="/attendx-pro.apk"
+              download="attendx-pro.apk"
+              title="Download Android APK package"
+              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-emerald-300 dark:border-emerald-800/80 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 text-xs font-semibold shadow-2xs transition"
+            >
+              <Smartphone className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span>APK</span>
+            </a>
+
             <PWAInstallButton />
 
             <div className="h-4 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block" />

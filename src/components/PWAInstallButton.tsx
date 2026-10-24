@@ -64,6 +64,29 @@ export const PWAInstallButton: React.FC = () => {
             </div>
 
             <div className="mt-4 space-y-3 text-xs text-slate-600 dark:text-slate-300">
+              {/* Android APK Download Card */}
+              <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-lg">
+                <div className="flex items-center justify-between gap-2">
+                  <div>
+                    <p className="font-semibold text-emerald-900 dark:text-emerald-200 flex items-center gap-1.5">
+                      <Smartphone className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                      <span>Android APK Package (.apk)</span>
+                    </p>
+                    <p className="text-[11px] text-emerald-700 dark:text-emerald-300 mt-0.5">
+                      Direct installable APK build for Android smartphones and tablets
+                    </p>
+                  </div>
+                  <a
+                    href="/attendx-pro.apk"
+                    download="attendx-pro.apk"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs transition shrink-0"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download APK</span>
+                  </a>
+                </div>
+              </div>
+
               {isIOS ? (
                 <>
                   <div className="p-3 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 rounded-lg">
@@ -78,8 +101,8 @@ export const PWAInstallButton: React.FC = () => {
               ) : (
                 <>
                   <div className="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg">
-                    <p className="font-semibold text-slate-900 dark:text-white mb-1">Android & Chrome Setup:</p>
-                    <p>Tap the three dots menu (<strong className="text-slate-800">⋮</strong>) in your browser and select <strong>"Install App"</strong> or <strong>"Add to Home Screen"</strong>.</p>
+                    <p className="font-semibold text-slate-900 dark:text-white mb-1">Progressive Web App (PWA):</p>
+                    <p>Tap the three dots menu (<strong className="text-slate-800">⋮</strong>) in Chrome/Edge and select <strong>"Install App"</strong> or <strong>"Add to Home Screen"</strong>.</p>
                   </div>
                   <div className="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg">
                     <p className="font-semibold text-slate-900 dark:text-white mb-1">Windows & macOS Desktop:</p>
