@@ -81,12 +81,33 @@ export const LeaveHolidayView: React.FC<LeaveHolidayViewProps> = ({
     }
   };
 
-  const handleDeleteLeave = async (id: string) => {
-    if (window.confirm('Delete this leave application?')) {
-      await api.deleteLeave(id);
+  const [leaveToDelete, setLeaveToDelete] = useState<string | null>(null);
+  const [holidayToDelete, setHolidayToDelete] = useState<string | null>(null);
+
+  const confirmDeleteLeave = async () => {
+    if (!leaveToDelete) return;
+    try {
+      await api.deleteLeave(leaveToDelete);
+      setLeaveToDelete(null);
       onRefresh();
+    } catch (e) {
+      console.error(e);
     }
   };
+
+  const confirmDeleteHoliday = async () => {
+    if (!holidayToDelete) return;
+    try {
+      await api.deleteHoliday(holidayToDelete);
+      setHolidayToDelete(null);
+      onRefresh();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDeleteLeave = (id: string) => setLeaveToDelete(id);
+  const handleDeleteHoliday = (id: string) => setHolidayToDelete(id);
 
   const handleAddHoliday = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,13 +126,6 @@ export const LeaveHolidayView: React.FC<LeaveHolidayViewProps> = ({
       console.error(e);
     } finally {
       setSaving(false);
-    }
-  };
-
-  const handleDeleteHoliday = async (id: string) => {
-    if (window.confirm('Remove this official holiday?')) {
-      await api.deleteHoliday(id);
-      onRefresh();
     }
   };
 
@@ -510,6 +524,62 @@ export const LeaveHolidayView: React.FC<LeaveHolidayViewProps> = ({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Leave Confirmation */}
+      {leaveToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+          <div className="w-full max-w-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 shadow-2xl">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Delete Leave Application</h3>
+            <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
+              Are you sure you want to remove this leave application from the records?
+            </p>
+            <div className="mt-5 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setLeaveToDelete(null)}
+                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmDeleteLeave}
+                className="px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Holiday Confirmation */}
+      {holidayToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+          <div className="w-full max-w-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 shadow-2xl">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Remove Official Holiday</h3>
+            <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
+              Are you sure you want to remove this holiday from the workspace calendar?
+            </p>
+            <div className="mt-5 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setHolidayToDelete(null)}
+                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmDeleteHoliday}
+                className="px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs"
+              >
+                Yes, Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

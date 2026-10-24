@@ -54,6 +54,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   // Demo seed state
   const [seeding, setSeeding] = useState(false);
   const [seedSuccess, setSeedSuccess] = useState<string | null>(null);
+  const [seedError, setSeedError] = useState<string | null>(null);
+  const [confirmSeedOpen, setConfirmSeedOpen] = useState(false);
+
+  // Account deletion state
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [deleteUsernameInput, setDeleteUsernameInput] = useState('');
+  const [deleteAccountError, setDeleteAccountError] = useState<string | null>(null);
 
   const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,34 +110,34 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     }
   };
 
-  const handleSeedDemo = async () => {
-    if (window.confirm('Load sample employees and October 2026 attendance data to test all calculations?')) {
-      try {
-        setSeeding(true);
-        const res = await api.seedDemoData();
-        setSeedSuccess(res.message);
-        onRefreshAll();
-      } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
-        alert(`Failed to load demo data: ${msg}`);
-      } finally {
-        setSeeding(false);
-      }
+  const executeSeedDemo = async () => {
+    try {
+      setSeeding(true);
+      setSeedError(null);
+      const res = await api.seedDemoData();
+      setSeedSuccess(res.message);
+      setConfirmSeedOpen(false);
+      onRefreshAll();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setSeedError(`Failed to load demo data: ${msg}`);
+    } finally {
+      setSeeding(false);
     }
   };
 
-  const handleDeleteAccount = async () => {
-    const confirmation = prompt(
-      `DANGER: This will permanently delete your workspace "${user.username}" and all staff, attendance, and payroll records.\nType "${user.username}" to confirm deletion:`
-    );
-    if (confirmation === user.username) {
-      try {
-        await api.deleteAccount();
-        onLogout();
-      } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
-        alert(msg);
-      }
+  const executeDeleteAccount = async () => {
+    if (deleteUsernameInput.trim() !== user.username) {
+      setDeleteAccountError(`Please type "${user.username}" exactly to confirm.`);
+      return;
+    }
+    try {
+      setDeleteAccountError(null);
+      await api.deleteAccount();
+      onLogout();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setDeleteAccountError(msg);
     }
   };
 
@@ -323,8 +330,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </div>
         )}
 
+        {seedError && (
+          <div className="p-2.5 rounded-lg bg-red-50 text-red-700 text-xs">
+            {seedError}
+          </div>
+        )}
+
         <button
-          onClick={handleSeedDemo}
+          onClick={() => setConfirmSeedOpen(true)}
           disabled={seeding}
           className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold shadow-xs disabled:opacity-50"
         >
@@ -433,13 +446,86 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           Permanently delete this workspace and erase all staff records, daily attendance logs, and generated salary history. This action cannot be reversed.
         </p>
         <button
-          onClick={handleDeleteAccount}
+          onClick={() => {
+            setDeleteUsernameInput('');
+            setDeleteAccountError(null);
+            setConfirmDeleteOpen(true);
+          }}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition"
         >
           <Trash2 className="w-3.5 h-3.5" />
           <span>Delete Workspace & Data</span>
         </button>
       </div>
+
+      {/* Seed Demo Confirmation Dialog */}
+      {confirmSeedOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+          <div className="w-full max-w-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 shadow-2xl">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Load Demo Data</h3>
+            <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
+              This will populate your workspace with 6 sample employees and complete October 2026 attendance records to demonstrate registers and payroll.
+            </p>
+            <div className="mt-5 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setConfirmSeedOpen(false)}
+                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={executeSeedDemo}
+                disabled={seeding}
+                className="px-3.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold shadow-xs"
+              >
+                {seeding ? 'Loading...' : 'Confirm Load'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Account Deletion Confirmation Dialog */}
+      {confirmDeleteOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+          <div className="w-full max-w-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 shadow-2xl">
+            <h3 className="text-sm font-bold text-red-600">Delete Workspace Permanently</h3>
+            <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
+              This will erase all your employee records and payroll data. Type <strong>{user.username}</strong> below to confirm:
+            </p>
+            <input
+              type="text"
+              value={deleteUsernameInput}
+              onChange={(e) => setDeleteUsernameInput(e.target.value)}
+              placeholder={user.username}
+              className="mt-3 w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+            />
+            {deleteAccountError && (
+              <div className="mt-2 p-2 rounded bg-red-50 text-red-700 text-xs">
+                {deleteAccountError}
+              </div>
+            )}
+            <div className="mt-5 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setConfirmDeleteOpen(false)}
+                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={executeDeleteAccount}
+                className="px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs"
+              >
+                Permanently Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

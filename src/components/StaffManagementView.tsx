@@ -149,16 +149,25 @@ export const StaffManagementView: React.FC<StaffManagementViewProps> = ({
     }
   };
 
-  const handleDelete = async (staff: Staff) => {
-    if (window.confirm(`Are you sure you want to remove "${staff.name}" (${staff.employeeId}) and all associated attendance records?`)) {
-      try {
-        await api.deleteStaff(staff.id);
-        onRefresh();
-      } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : String(err);
-        alert(msg);
-      }
+  const [staffToDelete, setStaffToDelete] = useState<Staff | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const confirmDelete = async () => {
+    if (!staffToDelete) return;
+    try {
+      setDeleteError(null);
+      await api.deleteStaff(staffToDelete.id);
+      setStaffToDelete(null);
+      onRefresh();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setDeleteError(msg);
     }
+  };
+
+  const handleDelete = (staff: Staff) => {
+    setDeleteError(null);
+    setStaffToDelete(staff);
   };
 
   return (
@@ -496,6 +505,41 @@ export const StaffManagementView: React.FC<StaffManagementViewProps> = ({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Staff Confirmation Modal */}
+      {staffToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+          <div className="w-full max-w-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 shadow-2xl">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+              Delete Employee Record
+            </h3>
+            <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
+              Are you sure you want to delete <strong>{staffToDelete.name}</strong> ({staffToDelete.employeeId}) and all their attendance records?
+            </p>
+            {deleteError && (
+              <div className="mt-2 p-2 rounded bg-red-50 text-red-700 text-xs">
+                {deleteError}
+              </div>
+            )}
+            <div className="mt-5 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setStaffToDelete(null)}
+                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmDelete}
+                className="px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs"
+              >
+                Yes, Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

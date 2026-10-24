@@ -49,12 +49,14 @@ export const ExcelImportExportView: React.FC<ExcelImportExportViewProps> = ({
   const [parsing, setParsing] = useState(false);
   const [importing, setImporting] = useState(false);
   const [importSuccess, setImportSuccess] = useState<string | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (!selected) return;
     setFile(selected);
     setImportSuccess(null);
+    setImportError(null);
     setParsing(true);
 
     try {
@@ -81,6 +83,7 @@ export const ExcelImportExportView: React.FC<ExcelImportExportViewProps> = ({
     if (!preview) return;
     try {
       setImporting(true);
+      setImportError(null);
       const res = await api.confirmExcelImport({
         staff: preview.validStaff,
         attendance: preview.validAttendance,
@@ -93,7 +96,7 @@ export const ExcelImportExportView: React.FC<ExcelImportExportViewProps> = ({
       onRefresh();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      alert(`Import failed: ${msg}`);
+      setImportError(`Import failed: ${msg}`);
     } finally {
       setImporting(false);
     }
@@ -115,6 +118,13 @@ export const ExcelImportExportView: React.FC<ExcelImportExportViewProps> = ({
         <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs flex items-center gap-2.5 shadow-xs">
           <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
           <span className="font-semibold">{importSuccess}</span>
+        </div>
+      )}
+
+      {importError && (
+        <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 text-xs flex items-center gap-2.5 shadow-xs">
+          <XCircle className="w-4 h-4 shrink-0 text-red-600" />
+          <span className="font-semibold">{importError}</span>
         </div>
       )}
 
